@@ -1,0 +1,40 @@
+<svg width="1440" height="900" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="150" y1="50" x2="1260" y2="840" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FBF5EB"/>
+      <stop offset="1" stop-color="#F0E2CF"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="220" y1="110" x2="1190" y2="760" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF8"/>
+      <stop offset="1" stop-color="#FBF3E7"/>
+    </linearGradient>
+  </defs>
+  <rect width="1440" height="900" fill="url(#bg)"/>
+  <circle cx="180" cy="120" r="180" fill="#E8C49E" fill-opacity="0.32"/>
+  <circle cx="1280" cy="790" r="220" fill="#D69E6D" fill-opacity="0.18"/>
+  <rect x="88" y="68" width="1264" height="764" rx="36" fill="url(#panel)" stroke="#E9D8C1" stroke-width="2"/>
+  <text x="140" y="146" fill="#A9532B" font-family="Georgia, serif" font-size="28" letter-spacing="3">GITHUB PROJECT TARGETING</text>
+  <text x="140" y="210" fill="#231B16" font-family="Georgia, serif" font-size="56" font-weight="700">ResumeForge</text>
+  <text x="140" y="252" fill="#6F655C" font-family="Georgia, serif" font-size="26">Rank repositories against a role and generate copy-pasteable resume bullets.</text>
+
+  <rect x="140" y="310" width="1160" height="96" rx="24" fill="#F5EEE4" stroke="#E4D1B6"/>
+  <text x="176" y="349" fill="#231B16" font-family="Georgia, serif" font-size="24" font-weight="700">Input</text>
+  <text x="176" y="386" fill="#6F655C" font-family="Georgia, serif" font-size="22">GitHub username + job description URL or pasted JD</text>
+
+  <rect x="140" y="438" width="560" height="312" rx="28" fill="#FFFCF8" stroke="#E4D1B6"/>
+  <text x="176" y="486" fill="#231B16" font-family="Georgia, serif" font-size="28" font-weight="700">Project Ranking</text>
+  <text x="176" y="530" fill="#A9532B" font-family="Georgia, serif" font-size="20" letter-spacing="2">#1 RESUMEFORGE</text>
+  <text x="176" y="566" fill="#6F655C" font-family="Georgia, serif" font-size="21">FastAPI • Gemini • GitHub ingestion • parsing</text>
+  <text x="176" y="610" fill="#231B16" font-family="Georgia, serif" font-size="21">• Strong fit for AI tooling and developer workflow roles</text>
+  <text x="176" y="648" fill="#231B16" font-family="Georgia, serif" font-size="21">• Shows full-stack architecture and production-minded scope</text>
+  <text x="176" y="686" fill="#231B16" font-family="Georgia, serif" font-size="21">• Combines LLM prompting, scraping, exports, and testing</text>
+
+  <rect x="732" y="438" width="568" height="312" rx="28" fill="#FFF8F0" stroke="#E4D1B6"/>
+  <text x="768" y="486" fill="#231B16" font-family="Georgia, serif" font-size="28" font-weight="700">Copy-Pasteable Bullets</text>
+  <text x="768" y="540" fill="#231B16" font-family="Georgia, serif" font-size="21">● Built ResumeForge, a FastAPI and Gemini-based tool that ranks</text>
+  <text x="792" y="570" fill="#231B16" font-family="Georgia, serif" font-size="21">GitHub projects against target roles and drafts resume-ready bullets.</text>
+  <text x="768" y="620" fill="#231B16" font-family="Georgia, serif" font-size="21">● Integrated GitHub API ingestion, PDF/text parsing, and job</text>
+  <text x="792" y="650" fill="#231B16" font-family="Georgia, serif" font-size="21">description extraction to ground project recommendations in real evidence.</text>
+  <text x="768" y="700" fill="#231B16" font-family="Georgia, serif" font-size="21">● Added frontend copy workflows, ranking UI, and backend tests</text>
+  <text x="792" y="730" fill="#231B16" font-family="Georgia, serif" font-size="21">covering GitHub ingestion, prompting, and API behavior.</text>
+</svg>

@@ -2,6 +2,10 @@
 
 ResumeForge is a GitHub-project targeting tool for resume editing.
 
+![ResumeForge preview](docs/assets/resumeforge-preview.svg)
+
+Live Demo: currently local-only. Run the backend and frontend with the included scripts, then open `http://127.0.0.1:4173`.
+
 Instead of trying to generate a full one-page resume, the app now:
 - fetches a user's recent GitHub repositories
 - cleans a pasted or URL-based job description
@@ -22,7 +26,7 @@ The goal is simple: help you decide which projects belong on your resume and giv
 
 ### GitHub project ingestion
 
-GitHub ingestion lives in [backend/github_ingestion.py](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/backend/github_ingestion.py).
+GitHub ingestion lives in [`backend/github_ingestion.py`](backend/github_ingestion.py).
 
 It supports:
 - fetching a user's recent public repositories
@@ -42,7 +46,7 @@ Notes:
 
 ### Job description parsing
 
-Job description parsing lives in [backend/scrape_jd.py](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/backend/scrape_jd.py).
+Job description parsing lives in [`backend/scrape_jd.py`](backend/scrape_jd.py).
 
 It supports:
 - pasted job description text
@@ -62,7 +66,7 @@ Accepted JSON fields:
 
 ### Project ranking and bullet generation
 
-The ranking flow lives in [backend/project_recommendations.py](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/backend/project_recommendations.py).
+The ranking flow lives in [`backend/project_recommendations.py`](backend/project_recommendations.py).
 
 It uses Gemini to:
 - compare GitHub repo evidence against the target role
@@ -72,7 +76,7 @@ It uses Gemini to:
 - avoid inventing tools, outcomes, or metrics
 
 Prompt:
-- [prompts/project_bullets_prompt.txt](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/prompts/project_bullets_prompt.txt)
+- [`prompts/project_bullets_prompt.txt`](prompts/project_bullets_prompt.txt)
 
 Endpoint:
 
@@ -101,7 +105,7 @@ Each ranked project includes:
 
 ### Frontend UI
 
-The frontend is a static app in [frontend/index.html](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/frontend/index.html) with behavior in [frontend/app.js](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/frontend/app.js).
+The frontend is a static app in [`frontend/index.html`](frontend/index.html) with behavior in [`frontend/app.js`](frontend/app.js).
 
 It supports:
 - GitHub username input and repo preview
@@ -110,8 +114,8 @@ It supports:
 - per-project bullet copying
 - copy-all output for quick resume editing
 
-Rendering helpers live in [frontend/rendering.js](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/frontend/rendering.js).
-Validation and request-state helpers live in [frontend/workflow.js](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/frontend/workflow.js).
+Rendering helpers live in [`frontend/rendering.js`](frontend/rendering.js).
+Validation and request-state helpers live in [`frontend/workflow.js`](frontend/workflow.js).
 
 ## Environment Variables
 
@@ -125,16 +129,16 @@ Notes:
 - `GEMINI_API_KEY` is required for ranked project bullets
 - `GEMINI_MODEL` defaults to `gemini-flash-latest`
 - `GITHUB_TOKEN` is optional but strongly recommended for higher GitHub API rate limits
-- see [.env.example](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/.env.example) for a starter file
+- see [`.env.example`](.env.example) for a starter file
 
 ## Local Run
 
 Dependency manifests and startup helpers:
-- [requirements.txt](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/requirements.txt)
-- [package.json](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/package.json)
-- [scripts/start_backend.sh](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/scripts/start_backend.sh)
-- [scripts/start_frontend.sh](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/scripts/start_frontend.sh)
-- [LOCAL_SETUP.md](/Users/aaravkenchiah/Downloads/Resume:Person%20Projects/Resume%20Proj/ResumeBuilder/LOCAL_SETUP.md)
+- [`requirements.txt`](requirements.txt)
+- [`package.json`](package.json)
+- [`scripts/start_backend.sh`](scripts/start_backend.sh)
+- [`scripts/start_frontend.sh`](scripts/start_frontend.sh)
+- [`LOCAL_SETUP.md`](LOCAL_SETUP.md)
 
 Backend:
 
@@ -179,3 +183,4 @@ node --test tests/frontend/rendering.test.js tests/frontend/workflow.test.js tes
 - Resume parsing and the older tailoring/export helpers still exist in the codebase, but the product direction is now centered on ranked GitHub projects and manual resume editing.
 - If GitHub preview fails with a rate-limit message, add a real `GITHUB_TOKEN` to `.env` and restart the backend.
 - Gemini calls are made server-side so the API key is not exposed in frontend code.
+- The GitHub remote may still be named `ResumeBuilder`; renaming the GitHub repository itself to `ResumeForge` is the last public-facing cleanup step to do on GitHub.

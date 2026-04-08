@@ -25,8 +25,8 @@ cp .env.example .env
 ```
 
 Set:
-- `GEMINI_API_KEY` for live resume tailoring
-- `GEMINI_MODEL` optionally, defaulting to `gemini-2.5-pro`
+- `GEMINI_API_KEY` for live project ranking and bullet generation
+- `GEMINI_MODEL` optionally, defaulting to `gemini-flash-latest`
 - `GITHUB_TOKEN` optionally for higher GitHub API rate limits
 
 ## 4. Start the Backend
@@ -70,7 +70,7 @@ http://127.0.0.1:4173
 Run backend tests:
 
 ```bash
-python -m unittest tests/test_github_ingestion.py tests/test_parse_resume.py tests/test_scrape_jd.py tests/test_claude_tailor.py tests/test_gap_analysis.py tests/test_export_resume.py tests/test_server.py
+python -m unittest tests/test_github_ingestion.py tests/test_parse_resume.py tests/test_scrape_jd.py tests/test_claude_tailor.py tests/test_gap_analysis.py tests/test_export_resume.py tests/test_project_recommendations.py tests/test_server.py
 ```
 
 Run frontend tests:
@@ -90,3 +90,4 @@ npm run test:frontend
 - PDF parsing requires `pypdf`
 - DOCX export requires `python-docx`
 - The frontend is static and talks directly to the FastAPI backend on `http://127.0.0.1:8000`
+- The current product flow is centered on ranked GitHub projects and copy-pasteable bullet generation
