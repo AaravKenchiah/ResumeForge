@@ -4,8 +4,6 @@ ResumeForge helps you turn GitHub projects into stronger resume content.
 
 ![ResumeForge preview](docs/assets/resumeforge-preview.svg)
 
-Live Demo: currently local-only. Run the backend and frontend with the included scripts, then open `http://127.0.0.1:4173`.
-
 ## What It Does
 
 ResumeForge is built for the moment before you edit your resume.
@@ -17,6 +15,12 @@ Instead of trying to auto-generate a final one-page resume, it:
 - drafts 3 to 4 copy-pasteable bullets for each project
 
 The goal is to help you decide what belongs on your resume and give you strong project bullets you can paste in manually.
+
+## Current Status
+
+- Product surface today: GitHub project ranking and copy-ready bullet drafting
+- Recommended next milestone: deploy backend and frontend, then replace the preview graphic with a real UI screenshot or GIF
+- Local run target: `http://127.0.0.1:4173`
 
 ## How It Works
 
@@ -65,7 +69,15 @@ POST /parse-job-description
 POST /recommend-projects
 ```
 
-The repo still contains earlier resume-parsing and tailoring modules, but the current product direction is centered on ranked GitHub projects and manual resume editing.
+## Scope Note
+
+The active product flow is:
+- fetch GitHub projects
+- parse a job description
+- rank projects for the role
+- generate copy-pasteable bullets
+
+The repository still contains earlier experimental modules for resume parsing, resume tailoring, export, and gap analysis. Those files reflect earlier iterations of the project and are not the primary product surface described in this README.
 
 ## Environment Variables
 
@@ -119,4 +131,4 @@ node --test tests/frontend/rendering.test.js tests/frontend/workflow.test.js tes
 
 - If GitHub preview hits a rate limit, add a real `GITHUB_TOKEN` to `.env` and restart the backend.
 - Gemini calls are server-side, so the API key is not exposed in frontend code.
-- The best next product step is deployment plus a public demo URL.
+- The strongest remaining repo upgrade is a deployed public demo plus a real UI screenshot or GIF.

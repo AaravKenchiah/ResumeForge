@@ -19,6 +19,8 @@ Today the app can:
 - generate 3 to 4 copy-pasteable bullets per project
 - let users copy bullets individually or in bulk from the frontend
 
+Legacy modules for full resume tailoring, export, and gap analysis still exist in the repository, but they are not the current primary product surface.
+
 ## Immediate Priorities
 
 ### 1. Deploy the product
