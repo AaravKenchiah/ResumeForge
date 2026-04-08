@@ -1,0 +1,11 @@
+{
+  "name": "resumeforge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:frontend": "node --test tests/frontend/rendering.test.js tests/frontend/workflow.test.js tests/frontend/diffing.test.js tests/frontend/gapAnalysis.test.js",
+    "serve:frontend": "python3 -m http.server 4173 -d frontend",
+    "serve:backend": "uvicorn backend.server:app --reload --host 127.0.0.1 --port 8000"
+  }
+}

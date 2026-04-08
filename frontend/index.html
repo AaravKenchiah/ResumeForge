@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ResumeForge</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <p class="eyebrow">GitHub Project Targeting</p>
+        <h1>ResumeForge</h1>
+        <p class="hero-copy">
+          Rank your GitHub projects against a target role and get copy-pasteable resume bullets
+          you can add manually.
+        </p>
+      </section>
+
+      <section class="panel">
+        <form id="resume-form" class="resume-form">
+          <p id="form-status" class="form-status" aria-live="polite">
+            Add a GitHub username and target job description to get ranked projects with copy-pasteable bullets.
+          </p>
+
+          <label>
+            <span>GitHub Username</span>
+            <div class="inline-input">
+              <input id="github-username" name="githubUsername" type="text" placeholder="janedev" />
+              <button id="fetch-github" type="button" class="secondary-button">Fetch Projects</button>
+            </div>
+          </label>
+
+          <label>
+            <span>Job Description URL</span>
+            <div class="inline-input">
+              <input
+                id="job-description-url"
+                name="jobDescriptionUrl"
+                type="url"
+                placeholder="https://company.com/jobs/software-engineer"
+              />
+              <button id="parse-job-description" type="button" class="secondary-button">
+                Fetch JD
+              </button>
+            </div>
+          </label>
+
+          <label>
+            <span>Job Description</span>
+            <textarea
+              id="job-description"
+              name="jobDescription"
+              rows="8"
+              placeholder="Paste the target job description here..."
+            ></textarea>
+          </label>
+
+          <button type="submit">Rank Projects + Draft Bullets</button>
+        </form>
+      </section>
+
+      <section class="panel output-panel">
+        <div class="panel-header">
+          <h2>GitHub Project Preview</h2>
+        </div>
+        <pre id="github-output" class="output">Fetched GitHub project summaries will appear here.</pre>
+      </section>
+
+      <section class="panel output-panel">
+        <div class="panel-header">
+          <h2>Job Description Preview</h2>
+        </div>
+        <pre id="job-description-output" class="output">Cleaned job description content will appear here.</pre>
+      </section>
+
+      <section class="panel output-panel">
+        <div class="panel-header">
+          <h2>Ranked Project Bullets</h2>
+          <div class="action-row">
+            <button id="copy-all-bullets" type="button">Copy All Bullets</button>
+          </div>
+        </div>
+        <article id="recommendations-output" class="recommendations-output">
+          <p class="recommendations-empty">Ranked GitHub project bullets will appear here.</p>
+        </article>
+        <pre id="recommendations-text-output" class="output output-raw">Copy-ready project bullets will appear here.</pre>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
