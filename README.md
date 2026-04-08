@@ -1,121 +1,71 @@
 # ResumeForge
 
-ResumeForge is a GitHub-project targeting tool for resume editing.
+ResumeForge helps you turn GitHub projects into stronger resume content.
 
 ![ResumeForge preview](docs/assets/resumeforge-preview.svg)
 
 Live Demo: currently local-only. Run the backend and frontend with the included scripts, then open `http://127.0.0.1:4173`.
 
-Instead of trying to generate a full one-page resume, the app now:
-- fetches a user's recent GitHub repositories
+## What It Does
+
+ResumeForge is built for the moment before you edit your resume.
+
+Instead of trying to auto-generate a final one-page resume, it:
+- fetches recent GitHub repositories for a username
 - cleans a pasted or URL-based job description
-- ranks the repositories from most relevant to least relevant for the role
-- generates 3 to 4 copy-pasteable resume bullets for each ranked project
+- ranks repositories from most relevant to least relevant for the role
+- drafts 3 to 4 copy-pasteable bullets for each project
 
-The goal is simple: help you decide which projects belong on your resume and give you strong, role-aligned bullets you can paste in manually.
+The goal is to help you decide what belongs on your resume and give you strong project bullets you can paste in manually.
 
-## Current Workflow
+## How It Works
 
 1. Enter a GitHub username.
 2. Paste a job description or fetch one from a job-posting URL.
-3. Click `Fetch Projects` to preview recent repos.
-4. Click `Rank Projects + Draft Bullets` to get ranked project recommendations and resume-ready bullets.
-5. Copy the bullets you want into your actual resume.
+3. Preview recent repositories with `Fetch Projects`.
+4. Run `Rank Projects + Draft Bullets`.
+5. Copy the best bullets into your actual resume.
 
-## What The App Does Now
+## Key Features
 
-### GitHub project ingestion
+- GitHub repo ingestion with repo metadata, topics, language, and optional README context
+- Job description parsing from pasted text or a URL
+- Gemini-powered project ranking against a target role
+- Copy-ready project bullets for manual resume editing
+- Ranked project cards with per-project and copy-all actions
+- Graceful GitHub rate-limit handling for lightweight preview requests
 
-GitHub ingestion lives in [`backend/github_ingestion.py`](backend/github_ingestion.py).
+## Tech Stack
 
-It supports:
-- fetching a user's recent public repositories
-- normalizing repo metadata for prompt use
-- optionally fetching README excerpts for richer project evidence
-- building concise project summaries for preview and Gemini prompting
+- Frontend: vanilla JavaScript, HTML, CSS
+- Backend: FastAPI, Python
+- AI: Gemini API
+- Integrations: GitHub REST API
+- Parsing: PDF/text resume parsing and HTML job-description cleaning
+- Testing: `unittest` for backend, Node test runner for frontend helpers
 
-Preview endpoint:
+## Repo Map
 
-```text
-GET /github/{username}
-```
+- Frontend app: [`frontend/index.html`](frontend/index.html), [`frontend/app.js`](frontend/app.js)
+- Frontend rendering helpers: [`frontend/rendering.js`](frontend/rendering.js)
+- Frontend workflow helpers: [`frontend/workflow.js`](frontend/workflow.js)
+- Backend API: [`backend/server.py`](backend/server.py)
+- GitHub ingestion: [`backend/github_ingestion.py`](backend/github_ingestion.py)
+- Job description parsing: [`backend/scrape_jd.py`](backend/scrape_jd.py)
+- Project ranking flow: [`backend/project_recommendations.py`](backend/project_recommendations.py)
+- Gemini prompt: [`prompts/project_bullets_prompt.txt`](prompts/project_bullets_prompt.txt)
+- Local setup guide: [`LOCAL_SETUP.md`](LOCAL_SETUP.md)
 
-Notes:
-- the preview route skips README fetches to reduce GitHub rate-limit pressure
-- adding `GITHUB_TOKEN` to `.env` improves reliability when hitting the GitHub API repeatedly
-
-### Job description parsing
-
-Job description parsing lives in [`backend/scrape_jd.py`](backend/scrape_jd.py).
-
-It supports:
-- pasted job description text
-- job-posting URLs
-- HTML cleanup and boilerplate removal
-- extracting likely description content from common page structures
-
-Endpoint:
+## API Endpoints
 
 ```text
+GET  /health
+GET  /github/{username}
 POST /parse-job-description
-```
-
-Accepted JSON fields:
-- `jobDescriptionText`
-- `jobDescriptionUrl`
-
-### Project ranking and bullet generation
-
-The ranking flow lives in [`backend/project_recommendations.py`](backend/project_recommendations.py).
-
-It uses Gemini to:
-- compare GitHub repo evidence against the target role
-- rank repos from most relevant to least relevant
-- write 3 to 4 concise bullets for each project
-- keep bullets grounded in repo metadata and README evidence
-- avoid inventing tools, outcomes, or metrics
-
-Prompt:
-- [`prompts/project_bullets_prompt.txt`](prompts/project_bullets_prompt.txt)
-
-Endpoint:
-
-```text
 POST /recommend-projects
 ```
 
-Accepted JSON fields:
-- `githubUsername`
-- `jobDescription`
-
-Example response fields:
-- `githubUsername`
-- `cleanedJobDescription`
-- `githubSummary`
-- `rankedProjects`
-
-Each ranked project includes:
-- `rank`
-- `name`
-- `relevanceSummary`
-- `language`
-- `url`
-- `description`
-- `bullets`
-
-### Frontend UI
-
-The frontend is a static app in [`frontend/index.html`](frontend/index.html) with behavior in [`frontend/app.js`](frontend/app.js).
-
-It supports:
-- GitHub username input and repo preview
-- pasted or URL-fetched job descriptions
-- ranked project cards
-- per-project bullet copying
-- copy-all output for quick resume editing
-
-Rendering helpers live in [`frontend/rendering.js`](frontend/rendering.js).
-Validation and request-state helpers live in [`frontend/workflow.js`](frontend/workflow.js).
+The repo still contains earlier resume-parsing and tailoring modules, but the current product direction is centered on ranked GitHub projects and manual resume editing.
 
 ## Environment Variables
 
@@ -125,28 +75,19 @@ GEMINI_MODEL=gemini-flash-latest
 GITHUB_TOKEN=ghp_...
 ```
 
-Notes:
-- `GEMINI_API_KEY` is required for ranked project bullets
-- `GEMINI_MODEL` defaults to `gemini-flash-latest`
-- `GITHUB_TOKEN` is optional but strongly recommended for higher GitHub API rate limits
-- see [`.env.example`](.env.example) for a starter file
+- `GEMINI_API_KEY` is required for project ranking and bullet generation
+- `GITHUB_TOKEN` is optional but strongly recommended for better GitHub API reliability
+- See [`.env.example`](.env.example) for a starter file
 
-## Local Run
+## Local Setup
 
-Dependency manifests and startup helpers:
-- [`requirements.txt`](requirements.txt)
-- [`package.json`](package.json)
-- [`scripts/start_backend.sh`](scripts/start_backend.sh)
-- [`scripts/start_frontend.sh`](scripts/start_frontend.sh)
-- [`LOCAL_SETUP.md`](LOCAL_SETUP.md)
-
-Backend:
+Start the backend:
 
 ```bash
 ./scripts/start_backend.sh
 ```
 
-Frontend:
+Start the frontend:
 
 ```bash
 ./scripts/start_frontend.sh
@@ -158,21 +99,17 @@ Open:
 http://127.0.0.1:4173
 ```
 
-Backend API:
-
-```text
-http://127.0.0.1:8000
-```
+For fuller setup details, see [`LOCAL_SETUP.md`](LOCAL_SETUP.md).
 
 ## Testing
 
-Backend tests:
+Backend:
 
 ```bash
 python -m unittest tests/test_github_ingestion.py tests/test_parse_resume.py tests/test_scrape_jd.py tests/test_claude_tailor.py tests/test_gap_analysis.py tests/test_export_resume.py tests/test_project_recommendations.py tests/test_server.py
 ```
 
-Frontend tests:
+Frontend:
 
 ```bash
 node --test tests/frontend/rendering.test.js tests/frontend/workflow.test.js tests/frontend/diffing.test.js tests/frontend/gapAnalysis.test.js
@@ -180,7 +117,6 @@ node --test tests/frontend/rendering.test.js tests/frontend/workflow.test.js tes
 
 ## Notes
 
-- Resume parsing and the older tailoring/export helpers still exist in the codebase, but the product direction is now centered on ranked GitHub projects and manual resume editing.
-- If GitHub preview fails with a rate-limit message, add a real `GITHUB_TOKEN` to `.env` and restart the backend.
-- Gemini calls are made server-side so the API key is not exposed in frontend code.
-- The GitHub remote may still be named `ResumeBuilder`; renaming the GitHub repository itself to `ResumeForge` is the last public-facing cleanup step to do on GitHub.
+- If GitHub preview hits a rate limit, add a real `GITHUB_TOKEN` to `.env` and restart the backend.
+- Gemini calls are server-side, so the API key is not exposed in frontend code.
+- The best next product step is deployment plus a public demo URL.

@@ -1,249 +1,135 @@
 # ResumeForge Roadmap
 
-## Vision
+## Product Direction
 
-Build an AI-powered resume tailoring tool that takes a GitHub username, an existing resume, and a job description, then produces a customized resume that preserves the user's original structure and style while aligning content to the target role.
+ResumeForge is no longer trying to output a fully formatted final resume.
 
-## Product Goal
+The current north star is:
+- help users identify which GitHub projects best match a role
+- generate strong project bullets they can manually place into their resume
+- evolve into a real tool that strangers can use, not just a one-off demo
 
-ResumeForge should help users generate a role-specific resume quickly, accurately, and without fabricating experience. The core value is combining real project evidence from GitHub, real resume history from an uploaded file, and real hiring signals from a job description into one tailored output.
+## Current Product
 
-## Core Scope
+Today the app can:
+- fetch recent public GitHub repositories for a username
+- preview lightweight repo summaries
+- parse job descriptions from pasted text or a URL
+- rank repositories against a target role with Gemini
+- generate 3 to 4 copy-pasteable bullets per project
+- let users copy bullets individually or in bulk from the frontend
 
-### Inputs
-- GitHub username
-- Existing resume as PDF or plain text
-- Job description as pasted text or URL
+## Immediate Priorities
 
-### Outputs
-- Tailored resume content
-- Optional missing-skill or gap notes
-- Exportable result in Markdown and PDF
+### 1. Deploy the product
 
-### Core Functional Requirements
-- Fetch public GitHub repositories, metadata, languages, and optional READMEs
-- Parse resume text and infer structure separately from content
-- Ingest a job description from pasted text or a scraped URL
-- Generate a tailored resume using Claude
-- Preserve original resume section order, formatting conventions, and tone
-- Display results in a clean UI with copy and download actions
+Highest priority.
 
-## Development Phases
+Goal:
+- make ResumeForge accessible without local setup
 
-## Phase 1: Foundation
+Suggested path:
+- deploy the FastAPI backend to Render
+- deploy the static frontend to Vercel
+- add a real live-demo link to the README
 
-### Goal
-Set up the base project structure and get a minimal end-to-end flow working.
+Success criteria:
+- a recruiter can click from GitHub to a working public demo
+- pushes to `main` update the deployed app
 
-### Deliverables
-- Initialize frontend app
-- Create optional backend scaffold
-- Add environment variable handling
-- Add prompt file structure
-- Define shared data models for:
-  - resume content
-  - resume structure
-  - GitHub project summaries
-  - job description text
-  - tailored resume output
+### 2. Add a resume-JD match score
 
-### Success Criteria
-- Project runs locally
-- Frontend can collect all three user inputs
-- Backend can accept requests if server-side mode is enabled
+Goal:
+- show whether the user's resume evidence is actually moving closer to the job description
 
-## Phase 2: GitHub Integration
+Initial approach:
+- keyword overlap
+- weighted skill matching
+- TF-IDF style scoring for role-specific terms
 
-### Goal
-Turn a GitHub username into meaningful project context for tailoring.
+Success criteria:
+- the UI shows a clear 0-100 style score
+- users can see before/after improvement
 
-### Deliverables
-- Fetch recent public repos via GitHub REST API
-- Extract repo name, description, language, topics, and updated date
-- Optionally fetch README content for top repositories
-- Summarize project relevance and tech stack for AI input
-- Handle empty accounts, rate limits, and missing READMEs gracefully
+### 3. Upgrade skill-gap analysis
 
-### Success Criteria
-- User can enter a GitHub username and preview fetched projects
-- App produces a concise GitHub summary suitable for prompting Claude
+Goal:
+- move beyond exact keyword matching
 
-## Phase 3: Resume Parsing
+Suggested approach:
+- semantic matching with `sentence-transformers`
+- lightweight model such as `all-MiniLM-L6-v2`
 
-### Goal
-Extract both resume text and formatting structure from uploaded files.
+Success criteria:
+- related phrases can match even without exact wording overlap
+- the missing-skill output feels materially smarter than string matching
 
-### Deliverables
-- Support PDF upload
-- Support plain text input or upload
-- Extract resume text client-side or server-side
-- Detect section headings and section order
-- Infer formatting patterns such as:
-  - bullet style
-  - date format
-  - heading style
-  - grouped vs inline skills format
-- Separate parsed output into:
-  - content representation
-  - structure representation
+## Secondary Priorities
 
-### Success Criteria
-- Parsed resume data reflects both what the resume says and how it is organized
-- The app can pass structure metadata to the AI prompt
+### 4. Add lightweight usage analytics
 
-## Phase 4: Job Description Ingestion
+Goal:
+- measure whether people actually use the product
 
-### Goal
-Support both pasted job descriptions and URL-based extraction.
+Options:
+- Plausible
+- CountAPI
+- a simple backend event counter
 
-### Deliverables
-- Add job description text area
-- Add optional URL input
-- Scrape and clean job posting text on the backend
-- Remove boilerplate and navigation noise where possible
-- Normalize the job description into a clean prompt-ready format
+Success criteria:
+- track visits and recommendation runs
+- gather real usage numbers for product credibility
 
-### Success Criteria
-- User can provide job description text directly or by URL
-- Extracted text is readable and useful for model prompting
+### 5. Improve README presentation
 
-## Phase 5: AI Tailoring Engine
+Goal:
+- make the repository read like a product page
 
-### Goal
-Generate a high-quality tailored resume while preserving the original format.
+Deliverables:
+- real UI screenshot or GIF
+- live-demo badge
+- concise feature and stack sections
+- tighter public-facing copy
 
-### Deliverables
-- Create `prompts/tailor_prompt.txt`
-- Integrate Anthropic Messages API
-- Build prompt assembly pipeline using:
-  - original resume text
-  - resume structure data
-  - GitHub project summary
-  - cleaned job description
-- Add strong prompt rules for:
-  - preserving section names and order
-  - preserving formatting conventions
-  - factual accuracy
-  - no fabricated experience
-  - keyword alignment to the job description
-- Add optional gap-highlighting output
+Success criteria:
+- the first screen of the README explains the product quickly
+- a recruiter can understand value without digging
 
-### Success Criteria
-- App returns a tailored resume that matches the original structure
-- Output emphasizes relevant experience and projects without inventing facts
+## Future Product Features
 
-## Phase 6: Output Rendering and Export
+### Match and analysis improvements
 
-### Goal
-Let users review, copy, and export the tailored resume easily.
+- project confidence score or explanation quality scoring
+- stronger evidence extraction from README text
+- semantic clustering of job requirements
+- better handling for sparse or poorly documented repos
 
-### Deliverables
-- Render tailored resume in a readable layout
-- Add copy-to-clipboard action
-- Add Markdown download
-- Add PDF export
-- Preserve formatting as closely as possible to the original resume
-- Provide simple before-and-after visibility if feasible
+### UX improvements
 
-### Success Criteria
-- User can review and export their tailored resume in at least one portable format
+- save recommendation sessions locally
+- let users pin favorite projects
+- export selected bullets as markdown snippets
+- show why one repo outranked another
 
-## Phase 7: Quality, Reliability, and UX
+### Platform improvements
 
-### Goal
-Make the experience stable, understandable, and safe for real users.
+- background caching for GitHub lookups
+- better GitHub rate-limit visibility
+- deployment configuration in-repo
+- analytics dashboards
 
-### Deliverables
-- Loading states and error handling across the full flow
-- Validation for missing or invalid inputs
-- Retry guidance for GitHub and AI API failures
-- Clear warnings around privacy and API key usage
-- Security improvement by moving API keys server-side
-- Friendly explanations when some inputs cannot be parsed
+## Risks
 
-### Success Criteria
-- Users can complete the workflow without confusion
-- Failures are actionable and do not break the app silently
+- GitHub rate limits can still affect users without a token
+- repo quality varies heavily depending on README quality and metadata
+- JD scraping can fail on heavily client-rendered or blocked job pages
+- ranking quality depends on the quality of the repo evidence available
 
-## Phase 8: Post-MVP Enhancements
+## Definition of Success
 
-### Goal
-Expand ResumeForge beyond the first release.
-
-### Potential Deliverables
-- DOCX export via `python-docx`
-- Side-by-side diff view
-- ATS keyword score before and after tailoring
-- Cover letter generation
-- LinkedIn profile ingestion
-- Saved tailoring history
-- Multiple resume templates
-- User authentication and saved sessions
-
-## MVP Definition
-
-The first shippable version should include:
-- GitHub username input
-- Resume upload or paste
-- Job description paste
-- Claude-powered tailored resume generation
-- Preservation of original section order and formatting style
-- Copy and Markdown export
-
-## Suggested Technical Milestones
-
-### Milestone 1
-- Set up frontend and backend structure
-- Implement base UI for inputs
-
-### Milestone 2
-- Finish GitHub data ingestion
-- Finish resume parsing flow
-
-### Milestone 3
-- Finish pasted job description support
-- Integrate Claude API and prompt pipeline
-
-### Milestone 4
-- Render tailored resume output
-- Add export actions
-
-### Milestone 5
-- Polish UX, validation, and edge-case handling
-- Prepare MVP for demo or deployment
-
-## Risks and Considerations
-
-- Resume structure extraction may be inconsistent across PDF formats
-- GitHub repos may not always reflect the user's strongest work
-- Job posting pages may block scraping or include noisy content
-- AI output quality will depend heavily on prompt design and input cleanup
-- Exposing the Anthropic API key in frontend code is not safe for production
-
-## Build Priorities
-
-### Highest Priority
-- Reliable input collection
-- Resume parsing
-- Strong prompt construction
-- Format-preserving tailored output
-
-### Medium Priority
-- URL-based job scraping
-- PDF export fidelity
-- Gap analysis
-
-### Lower Priority
-- DOCX export
-- Diff view
-- ATS scoring
-- LinkedIn support
-
-## Definition of Done
-
-ResumeForge is ready for MVP when:
-- A user can input a GitHub username, resume, and job description
-- The app produces a tailored resume in one flow
-- The tailored output keeps the same section order and style as the original
-- The system does not fabricate facts
-- The user can copy or export the result
+ResumeForge is in a strong public state when:
+- it is deployed
+- the README has a real demo link and product visuals
+- users can rank projects against a role end to end
+- the app surfaces useful bullet suggestions quickly
+- the analysis output is strong enough that users trust it and keep editing from it
